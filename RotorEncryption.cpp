@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <cstring>
 
 using namespace std;
 
@@ -66,6 +67,11 @@ void RotorEncryption::permuteASCIIMap(string &map)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rotor Cipher Encryption/Decryption
+// Constructor
+RotorEncryption::RotorEncryption()
+{
+    generateEncryptionSchemeArray();
+}
 
 // Deconstructor
 RotorEncryption::~RotorEncryption()
@@ -73,6 +79,11 @@ RotorEncryption::~RotorEncryption()
     for (int i = 0; i < mSchemes.size(); ++i)
     {
         delete mSchemes[i];
+    }
+
+    if (offsetMap)
+    {
+        delete[] offsetMap;
     }
 }
 
@@ -91,11 +102,11 @@ void RotorEncryption::generateEncryptionSchemeArray()
     string line;
     // Retrieve Header
     getline(file, line);
-    int schemeCount = atoi(line.c_str());
+    mSchemeCount = atoi(line.c_str());
     getline(file, line);
-    int rotorCount = atoi(line.c_str());
+    mRotorCount = atoi(line.c_str());
     getline(file, line);
-    int mlen = atoi(line.c_str());
+    mMLength = atoi(line.c_str());
 
     // Retrieve schemes
     while(getline(file, line))
@@ -106,23 +117,27 @@ void RotorEncryption::generateEncryptionSchemeArray()
         if (line.length() < 10)
         {
             int schemeId = atoi(line.c_str());
-            EScheme *scheme = new EScheme(schemeId, rotorCount, mlen);
+            EScheme *scheme = new EScheme(schemeId, mRotorCount, mMLength);
             mSchemes.push_back(scheme);
             continue;
         }
 
         // Create ioMap for each rotor in scheme
-        for (int i = 0; i < rotorCount; ++i)
+        for (int i = 0; i < mRotorCount; ++i)
         {
             // For each char on line
-            for (int j = 0; j < mlen; ++j)
+            for (int j = 0; j < mMLength; ++j)
             {
-                mSchemes.back()->ioMap[(i * mlen) + j] = line[j];
+                mSchemes.back()->ioMap[(i * mMLength) + j] = line[j];
             }
 
             getline(file, line);
         }
     }
+
+    // Create offset map
+    offsetMap = new int[mRotorCount];
+    memset(offsetMap, 0, sizeof(int) * mRotorCount);
 
     file.close();
 }

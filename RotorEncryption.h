@@ -39,13 +39,18 @@ public:
     static string asciimap;
 
     // De/Constructor
-    RotorEncryption() {};
+    RotorEncryption();
     ~RotorEncryption();
-
-    void generateEncryptionSchemeArray();
 private:
     // Vars
     vector<EScheme*> mSchemes; // Hold all shemes
+    int *offsetMap;
+    int mRotorCount;
+    int mSchemeCount;
+    int mMLength;
+
+    // Private Methods
+    void generateEncryptionSchemeArray();
 
     // Static Methods
     static void permuteASCIIMap(string &map);
