@@ -55,6 +55,8 @@ int main()
     if (choiceVal == 1)
     {
         // Set up the Client
+        RotorEncryption divice;
+        divice.generateEncryptionSchemeArray();
     }
     if (choiceVal == 2)
     {

@@ -14,9 +14,10 @@ using namespace std;
 struct EScheme {
     EScheme(int i, int c, int len) :
             schemeId(i),
-            rotorCount(c),
-            ioMap(new char[len * c])
-    {}
+            rotorCount(c)
+    {
+        ioMap = new char[len * c];
+    }
 
     ~EScheme(){
         if (ioMap)
@@ -37,10 +38,14 @@ public:
     static void buildEncryptionSchemeFlatFile(int rotorcount, int schemeCount);
     static string asciimap;
 
+    // De/Constructor
+    RotorEncryption() {};
+    ~RotorEncryption();
+
     void generateEncryptionSchemeArray();
 private:
     // Vars
-    vector<EScheme> mSchemes; // Hold all shemes
+    vector<EScheme*> mSchemes; // Hold all shemes
 
     // Static Methods
     static void permuteASCIIMap(string &map);

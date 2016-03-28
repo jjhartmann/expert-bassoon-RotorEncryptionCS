@@ -63,7 +63,21 @@ void RotorEncryption::permuteASCIIMap(string &map)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rotor Cipher Encryption/Decryption
+
+// Deconstructor
+RotorEncryption::~RotorEncryption()
+{
+    for (int i = 0; i < mSchemes.size(); ++i)
+    {
+        delete mSchemes[i];
+    }
+}
+
+
+// Generate the Encryption Vector from the flat files
 void RotorEncryption::generateEncryptionSchemeArray()
 {
     int maplen = asciimap.length();
@@ -92,14 +106,21 @@ void RotorEncryption::generateEncryptionSchemeArray()
         if (line.length() < 10)
         {
             int schemeId = atoi(line.c_str());
-            mSchemes.push_back(EScheme(schemeId, rotorCount, mlen));
+            EScheme *scheme = new EScheme(schemeId, rotorCount, mlen);
+            mSchemes.push_back(scheme);
             continue;
         }
 
         // Create ioMap for each rotor in scheme
         for (int i = 0; i < rotorCount; ++i)
         {
+            // For each char on line
+            for (int j = 0; j < mlen; ++j)
+            {
+                mSchemes.back()->ioMap[(i * mlen) + j] = line[j];
+            }
 
+            getline(file, line);
         }
     }
 
