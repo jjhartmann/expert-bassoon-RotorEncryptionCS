@@ -10,20 +10,14 @@
 #include <ctime>
 #include <algorithm>
 
+#include "RotorEncryption.h"
+
 using namespace std;
 
 #define MCHARS 94
 
 // Forward Declaration
 void buildEncryptionSchemeFlatFile(int rotorcount, int schemeCount);
-
-
-// Struct definition for Encruyption scheme
-struct EScheme {
-    int id;
-    int rotorCount;
-    int *ioMap;
-};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Main
@@ -55,7 +49,7 @@ int main()
         cin >> rotor;
         int schemeCount = atoi(scheme.c_str());
         int rotorCount = atoi(rotor.c_str());
-        buildEncryptionSchemeFlatFile(rotorCount, schemeCount);
+        RotorEncryption::buildEncryptionSchemeFlatFile(rotorCount, schemeCount);
 
     }
     if (choiceVal == 1)
@@ -71,53 +65,6 @@ int main()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Build Encryption Scheme
-void permuteASCIIMap(string &map)
-{
-    // Create random permutation of string
-    srand(time(NULL));
-    int len = map.length();
-    for (int i = len - 1; i >= 0; --i)
-    {
-        int offset = rand() % len;
-        swap(map[offset], map[i]);
-    }
-}
-
-void buildEncryptionSchemeFlatFile(int rotorcount, int schemeCount)
-{
-    // Seed RNG
-    srand(time(NULL));
-    string asciimap = " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-    int len = asciimap.length();
-    // Open file to write to
-    ofstream file("encyptionscheme.txt");
-    for (int i = 0; i < schemeCount; ++i)
-    {
-        // identify the scheme number
-        file << i << "\n";
-        // For the number of rotors
-        for (int j = 0; j < rotorcount; ++j)
-        {
-            // Permute map
-            permuteASCIIMap(asciimap);
-
-            // For each character in map
-            for (int k = 0; k < len - 1; ++k)
-            {
-                file <<  asciimap[k] << "\t";
-            }
-            // Last char
-            file <<  asciimap[len - 1] << "\n";
-        }
-
-        file << "\n";
-    }
-    // Close file handle
-    file.close();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Server
 
 
@@ -125,13 +72,5 @@ void buildEncryptionSchemeFlatFile(int rotorcount, int schemeCount)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Client
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Rotor Cipher Encryption/Decryption
-void generateEncryptionSchemeArray()
-{
-    ifstream file("encyptionscheme.txt");
 
-
-    file.close();
-}
 
