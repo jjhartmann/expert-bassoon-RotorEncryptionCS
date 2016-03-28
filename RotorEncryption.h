@@ -43,8 +43,8 @@ public:
     ~RotorEncryption();
 
     // Encrypt/Decrypt
-    void encrypt(string message, int schemeId);
-    void decrypt(string message, int schemeId);
+    string encrypt(string message, int schemeId);
+    string decrypt(string message, int schemeId);
 private:
     // Vars
     vector<EScheme*> mSchemes; // Hold all shemes

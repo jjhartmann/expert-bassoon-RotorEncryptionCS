@@ -143,13 +143,13 @@ void RotorEncryption::generateEncryptionSchemeArray()
 }
 
 // Encypt message based on schemeId
-void RotorEncryption::encrypt(string message, int schemeId)
+string RotorEncryption::encrypt(string message, int schemeId)
 {
 
 }
 
 // Decrypt message based on schemeId
-void RotorEncryption::decrypt(string message, int schemeId)
+string RotorEncryption::decrypt(string message, int schemeId)
 {
 
 }
