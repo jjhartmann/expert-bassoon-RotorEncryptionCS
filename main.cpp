@@ -5,12 +5,17 @@
 // Jeremy J. Hartmann
 // 2016
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
+#include <ctime>
+#include <algorithm>
 
 using namespace std;
 
+#define MCHARS 94
+
 // Forward Declaration
-void buildEncryptionSchemeFlatFile(int rotorcount, int N);
+void buildEncryptionSchemeFlatFile(int rotorcount, int schemeCount);
 
 
 // Struct definition for Encruyption scheme
@@ -67,12 +72,47 @@ int main()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Build Encryption Scheme
-void buildEncryptionSchemeFlatFile(int rotorcount, int N)
+void permuteASCIIMap(string &map)
 {
+    // Create random permutation of string
+    srand(time(NULL));
+    int len = map.length();
+    for (int i = len; i > 1; --i)
+    {
+        int offset = rand() % len;
+        swap(map[offset], map[i - 1]);
+    }
+}
 
+void buildEncryptionSchemeFlatFile(int rotorcount, int schemeCount)
+{
+    // Seed RNG
+    srand(time(NULL));
+    string asciimap = " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+    int len = asciimap.length();
+    // Open file to write to
+    ofstream file("encyptionscheme.txt");
+    for (int i = 0; i < schemeCount; ++i)
+    {
+        // identify the scheme number
+        file << i << "\n";
+        // For the number of rotors
+        for (int j = 0; j < rotorcount; ++j)
+        {
+            // Permute map
+            permuteASCIIMap(asciimap);
 
+            // For each character in map
+            for (int k = 0; k < len - 1; ++k)
+            {
+                file <<  asciimap[k] << "\t";
+            }
+            // Last char
+            file <<  asciimap[len - 1] << "\n";
+        }
 
-
-
-
+        file << "\n";
+    }
+    // Close file handle
+    file.close();
 }
