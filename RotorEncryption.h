@@ -42,9 +42,12 @@ public:
     RotorEncryption();
     ~RotorEncryption();
 
+    // Set current schemeID
+    inline void setSchemeId(int id) { mCurrentSchemeId = id; }
+
     // Encrypt/Decrypt
-    string encrypt(string message, int schemeId);
-    string decrypt(string message, int schemeId);
+    string encrypt(string message);
+    string decrypt(string message);
 private:
     // Vars
     vector<EScheme*> mSchemes; // Hold all shemes
@@ -52,9 +55,11 @@ private:
     int mRotorCount;
     int mSchemeCount;
     int mMLength;
+    int mCurrentSchemeId;
 
     // Private Methods
     void generateEncryptionSchemeArray();
+    char encryptchar(char c);
 
     // Static Methods
     static void permuteASCIIMap(string &map);

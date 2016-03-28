@@ -68,7 +68,8 @@ void RotorEncryption::permuteASCIIMap(string &map)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rotor Cipher Encryption/Decryption
 // Constructor
-RotorEncryption::RotorEncryption()
+RotorEncryption::RotorEncryption() :
+    mCurrentSchemeId(0)
 {
     generateEncryptionSchemeArray();
 }
@@ -87,7 +88,27 @@ RotorEncryption::~RotorEncryption()
     }
 }
 
+// Encypt message based on schemeId
+string RotorEncryption::encrypt(string message)
+{
+    memset(offsetMap, 0, sizeof(int) * mRotorCount);
+    string encryptMessage;
+    for (int i = 0; i < message.length(); ++i)
+    {
 
+    }
+
+    return encryptMessage;
+}
+
+// Decrypt message based on schemeId
+string RotorEncryption::decrypt(string message)
+{
+    memset(offsetMap, 0, sizeof(int) * mRotorCount);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Private Methods
 // Generate the Encryption Vector from the flat files
 void RotorEncryption::generateEncryptionSchemeArray()
 {
@@ -142,17 +163,13 @@ void RotorEncryption::generateEncryptionSchemeArray()
     file.close();
 }
 
-// Encypt message based on schemeId
-string RotorEncryption::encrypt(string message, int schemeId)
+// Encrypt a single char and increment offset counters.
+char RotorEncryption::encryptchar(char c)
 {
 
 }
 
-// Decrypt message based on schemeId
-string RotorEncryption::decrypt(string message, int schemeId)
-{
 
-}
 
 
 
