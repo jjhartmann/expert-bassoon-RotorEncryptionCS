@@ -77,10 +77,10 @@ void permuteASCIIMap(string &map)
     // Create random permutation of string
     srand(time(NULL));
     int len = map.length();
-    for (int i = len; i > 1; --i)
+    for (int i = len - 1; i >= 0; --i)
     {
         int offset = rand() % len;
-        swap(map[offset], map[i - 1]);
+        swap(map[offset], map[i]);
     }
 }
 
