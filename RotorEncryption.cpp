@@ -38,7 +38,7 @@ void RotorEncryption::buildEncryptionSchemeFlatFile(int rotorcount, int schemeCo
             // For each character in map
             for (int k = 0; k < len - 1; ++k)
             {
-                file <<  RotorEncryption::asciimap[k] << "\t";
+                file <<  RotorEncryption::asciimap[k];
             }
             // Last char
             file <<  RotorEncryption::asciimap[len - 1] << "\n";
@@ -83,6 +83,7 @@ void RotorEncryption::generateEncryptionSchemeArray()
     getline(file, line);
     int mlen = atoi(line.c_str());
 
+    // Retrieve schemes
     while(getline(file, line))
     {
         if(line.length() == 0) continue; // Nothing to parse
@@ -95,13 +96,11 @@ void RotorEncryption::generateEncryptionSchemeArray()
             continue;
         }
 
-        // Get
+        // Create ioMap for each rotor in scheme
         for (int i = 0; i < rotorCount; ++i)
         {
 
         }
-
-
     }
 
     file.close();
