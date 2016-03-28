@@ -141,3 +141,20 @@ void RotorEncryption::generateEncryptionSchemeArray()
 
     file.close();
 }
+
+// Encypt message based on schemeId
+void RotorEncryption::encrypt(string message, int schemeId)
+{
+
+}
+
+// Decrypt message based on schemeId
+void RotorEncryption::decrypt(string message, int schemeId)
+{
+
+}
+
+
+
+
+
