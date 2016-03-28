@@ -95,7 +95,7 @@ string RotorEncryption::encrypt(string message)
     string encryptMessage;
     for (int i = 0; i < message.length(); ++i)
     {
-
+        encryptMessage += encryptchar(message[i]);
     }
 
     return encryptMessage;
@@ -105,6 +105,7 @@ string RotorEncryption::encrypt(string message)
 string RotorEncryption::decrypt(string message)
 {
     memset(offsetMap, 0, sizeof(int) * mRotorCount);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,7 +167,26 @@ void RotorEncryption::generateEncryptionSchemeArray()
 // Encrypt a single char and increment offset counters.
 char RotorEncryption::encryptchar(char c)
 {
+    EScheme *currentScheme = mSchemes[mCurrentSchemeId];
+    char *currentMap = currentScheme->ioMap;
+    int n_c = c - ' ';
+    for (int i = 0; i < mRotorCount; ++i)
+    {
+        n_c = (char) (((currentMap[(i * mMLength) + n_c] + offsetMap[i]) - ' ') % mMLength);
+    }
 
+    c = (char) n_c + ' ';
+
+    // Increment offsets
+    offsetMap[0]++;
+    int index = 0;
+    while (offsetMap[index] == 0 && index < mRotorCount - 1)
+    {
+        index++;
+        offsetMap[index]++;
+    }
+
+    return c;
 }
 
 

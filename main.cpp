@@ -55,7 +55,12 @@ int main()
     if (choiceVal == 1)
     {
         // Set up the Client
-        RotorEncryption divice;
+        RotorEncryption device;
+        device.setSchemeId(3);
+        string message = "Hello this is a string.";
+        string response = device.encrypt(message);
+        cout << response << endl;
+        string decrypted = device.decrypt(response);
     }
     if (choiceVal == 2)
     {
