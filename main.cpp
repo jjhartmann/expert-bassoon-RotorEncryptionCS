@@ -108,7 +108,114 @@ int main()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Server
 
+void StartServer(int portNumber)
+{
+    // Config variables
+    int serverSocketFileDesc = -1;
+    int clientSocketFileDesc = -1;
+    socklen_t clientLen;
 
+    // Socket Structure to use when making connections
+    struct sockaddr_in serverAddress, clientAddress;
+
+    // Create TCP socket over IP.
+    if ((serverSocketFileDesc = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        cout << "Error: serverSocketFileDesc failed to instantiate. Error Code: " << serverSocketFileDesc << endl;
+        error("Error: socket() for server failed.");
+    }
+
+    // Set server address to zero
+    bzero((char *) &serverAddress, sizeof(serverAddress));
+
+    // Configure Server Address.
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_port = htons(portNumber); // Convert to network byte order.
+    serverAddress.sin_addr.s_addr = INADDR_ANY;
+
+    // Bind socket file desc to server address
+    if (bind(serverSocketFileDesc, (sockaddr *) &serverAddress, sizeof(serverAddress)) < 0)
+    {
+        error("Error: Failed to bind socket to server address.");
+    }
+
+    // Start listen on socket
+    listen(serverSocketFileDesc, 5);
+    clientLen = sizeof(clientAddress);
+
+    // Set up sigchld handler
+    struct sigaction sa;
+    sa.sa_handler = &handle_sigchld;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART | SA_NOCLDSTOP;
+    if (sigaction(SIGCHLD, &sa, 0) < 0)
+    {
+        error("ERROR: Failed to setup SIGCHLD handler.");
+    }
+
+    // Start server loop
+    while (true)
+    {
+        // Set up connection
+        if ((clientSocketFileDesc = accept(serverSocketFileDesc, (sockaddr *) &clientAddress, &clientLen)) < 0) {
+            error("ERROR: Failed to set up connection with client");
+        }
+
+        pid_t pid;
+        if ((pid = fork()) < 0)
+        {
+            error("Failed to create process");
+        }
+        else if (pid == 0)
+        {
+            // Process the client connection
+            close(serverSocketFileDesc);
+            InfiniteRun(clientSocketFileDesc);
+
+            // end process
+            exit(0);
+        }
+        else
+        {
+            // Close the connection in the parent.
+            close(clientSocketFileDesc);
+        }
+
+
+    }
+
+    close(serverSocketFileDesc);
+}
+
+void InfiniteRun(int csfd)
+{
+    cout << "ENTERED PROCESS FOR CLIENT" << endl;
+    // Set up buffer and connection
+    int bufferLen = 1024;
+    char buffer[bufferLen];
+    bool exit = false;
+    while (!exit)
+    {
+        bzero((char *) buffer, bufferLen);
+        int byteCount;
+        if ((byteCount = recv(csfd, buffer, bufferLen, 0)) < 0) {
+            error("ERROR: Failed to read form buffer");
+        }
+
+        cout << "Received bytes: " << byteCount << endl;
+        cout << "Received message: " << buffer << endl;
+
+        // Send message back to client.
+        if ((byteCount = send(csfd, "RECVED MESSAGE", 14, 0)) < 0) {
+            error("ERROR: Failed to send to client");
+        }
+
+        exit = (strncmp("exit", buffer, 4) == 0);
+    }
+
+    cout << "EXIT PROCESS FOR CLIENT" << endl;
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Client
