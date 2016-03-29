@@ -16,19 +16,26 @@ struct EScheme {
             schemeId(i),
             rotorCount(c)
     {
-        ioMap = new char[len * c];
+        ioMapEn = new char[len * c];
+        ioMapDe = new char[len * c];
     }
 
     ~EScheme(){
-        if (ioMap)
+        if (ioMapEn)
         {
-            delete[] ioMap;
+            delete[] ioMapEn;
+        }
+
+        if (ioMapDe)
+        {
+            delete[] ioMapDe;
         }
     }
 
     int schemeId;
     int rotorCount;
-    char *ioMap;
+    char *ioMapEn;
+    char *ioMapDe;
 };
 
 // Main class
@@ -60,6 +67,7 @@ private:
     // Private Methods
     void generateEncryptionSchemeArray();
     char encryptchar(char c);
+    char decryptchar(char c);
 
     // Static Methods
     static void permuteASCIIMap(string &map);

@@ -105,7 +105,13 @@ string RotorEncryption::encrypt(string message)
 string RotorEncryption::decrypt(string message)
 {
     memset(offsetMap, 0, sizeof(int) * mRotorCount);
+    string decryptMessage;
+    for (int i = 0; i < message.length(); ++i)
+    {
+        decryptMessage += decryptchar(message[i]);
+    }
 
+    return decryptMessage;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +156,7 @@ void RotorEncryption::generateEncryptionSchemeArray()
             // For each char on line
             for (int j = 0; j < mMLength; ++j)
             {
-                mSchemes.back()->ioMap[(i * mMLength) + j] = line[j];
+                mSchemes.back()->ioMapEn[(i * mMLength) + j] = line[j];
             }
 
             getline(file, line);
@@ -168,13 +174,47 @@ void RotorEncryption::generateEncryptionSchemeArray()
 char RotorEncryption::encryptchar(char c)
 {
     EScheme *currentScheme = mSchemes[mCurrentSchemeId];
-    char *currentMap = currentScheme->ioMap;
+    char *currentMap = currentScheme->ioMapEn;
     int n_c = c - ' ';
     for (int i = 0; i < mRotorCount; ++i)
     {
         n_c = (char) (((currentMap[(i * mMLength) + n_c] + offsetMap[i]) - ' ') % mMLength);
     }
 
+    // Set current char
+    c = (char) n_c + ' ';
+
+    // Increment offsets
+    offsetMap[0]++;
+    int index = 0;
+    while (offsetMap[index] == 0 && index < mRotorCount - 1)
+    {
+        index++;
+        offsetMap[index]++;
+    }
+
+    return c;
+}
+
+// Encrypt a single char and increment offset counters.
+char RotorEncryption::decryptchar(char c)
+{
+    EScheme *currentScheme = mSchemes[mCurrentSchemeId];
+    char *currentMap = currentScheme->ioMapEn;
+    int n_c = c - ' ';
+    for (int i = mRotorCount - 1; i >= 0; --i)
+    {
+        int tmp = n_c;
+        int prev = n_c;
+        do
+        {
+            prev = tmp;
+            tmp = (char) (((currentMap[(i * mMLength) + tmp] + offsetMap[i]) - ' ') % mMLength);
+        } while (n_c != tmp);
+
+        n_c = prev;
+    }
+    // Set current char
     c = (char) n_c + ' ';
 
     // Increment offsets
