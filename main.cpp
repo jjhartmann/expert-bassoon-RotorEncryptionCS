@@ -220,5 +220,129 @@ void InfiniteRun(int csfd)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Client
 
+void StartClient(string hostName, int portNumber)
+{
+    // Check to see if host is name or address
+    cout << "Is host identified by name? (Y/n): ";
+    string answer;
+    cin >> answer;
 
+
+    int clientSocketFileDesc = -1;
+    sockaddr_in serverAddress;
+    struct in_addr serverAddr;
+    hostent *server;
+
+    // Setup socket
+    if ((clientSocketFileDesc = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        error("ERROR: Failed to create socket.");
+    }
+
+    // get server by hostname
+    if (answer == "Y")
+    {
+        // Use the hostname
+        if ((server = gethostbyname(hostName.c_str())) == NULL)
+        {
+            error("ERROR: Failed to get server hostname");
+        }
+    }
+    else
+    {
+        // Use IP address
+        inet_pton(AF_INET, hostName.c_str(), &serverAddr);
+        if ((server = gethostbyaddr(&serverAddr, sizeof(serverAddr), AF_INET)) == NULL)
+        {
+            error("ERROR: Failed to get server address");
+        }
+    }
+    // Zero out serverAddress and add configuration
+    bzero((char *) &serverAddress, sizeof(serverAddress));
+    serverAddress.sin_family = AF_INET;
+    bcopy(server->h_addr, (char *) &serverAddress.sin_addr.s_addr, server->h_length);
+    serverAddress.sin_port = htons(portNumber);
+
+
+    // Connect client socket to server
+    if (connect(clientSocketFileDesc, (sockaddr *) &serverAddress, sizeof(serverAddress)))
+    {
+        error("Error: Failed to connect to server.");
+    }
+
+
+    // Ask user for message to send server
+    int buff_size = 1024;
+    char buffer[buff_size];
+    int byteCount;
+
+    // Test One Caputure packet
+    cout << "Conduct Test One (caputre TCP packet)? (Y,n): ";
+    string testAccept;
+    cin >> testAccept;
+    if (testAccept == "Y")
+    {
+        // Capture a TCP packet and store in file.
+        // 1. Make a file to store packet.
+        system("touch A3Packet_1.txt");
+
+        // 2. Set up tcpdump in background process to store packet.
+        system("tcpdump -c 3 -s0 -Xvvvi eth0 tcp port 12345 > A3Packet_1.txt&");
+
+        // Sleep so tcpdump get initialized
+        cout << "\n\nWAIT FOR TCPDUMP: SHOULD PROCEED? (Y): ";
+        string dummy;
+        cin >> dummy;
+
+        string testMsg = "This is a message to test the server.";
+
+        bzero((char *)buffer, buff_size);
+        bcopy((char *) testMsg.c_str(), buffer, testMsg.length());
+
+        if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+        {
+            error("ERROR: sending message to server.");
+        }
+
+        // Receive response from sever
+        bzero(buffer, buff_size);
+        if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+        {
+            error("ERROR: Could not read from sever.");
+        }
+
+        cout << "Message from server: " << buffer << endl;
+    }
+
+
+
+    bool exit = false;
+    while (!exit){
+        cout << "Enter Message to send to server: ";
+        string tmp;
+        cin.ignore();
+        getline (cin,tmp);
+
+        bzero((char *)buffer, buff_size);
+        bcopy((char *) tmp.c_str(), buffer, tmp.length());
+
+        if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+        {
+            error("ERROR: sending message to server.");
+        }
+
+        // Receive response from sever
+        bzero(buffer, buff_size);
+        if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+        {
+            error("ERROR: Could not read from sever.");
+        }
+
+        cout << "Message from server: " << buffer << endl;
+        exit = (tmp == "exit");
+    }
+    // Close connections
+    close(clientSocketFileDesc);
+
+}
 
