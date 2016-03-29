@@ -9,6 +9,17 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <stdio.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <string.h>
+#include <unistd.h>
 
 #include "RotorEncryption.h"
 #include "DiffieHellman.h"
@@ -17,7 +28,28 @@ using namespace std;
 
 #define MCHARS 94
 
-// Forward Declaration
+// SIGCHLD Handler
+void handle_sigchld(int sig)
+{
+    // cout << "SENT SIGCHLD" << endl;
+    int serrno = errno;
+    while (waitpid((pid_t) -1, 0, WNOHANG) > 0) {
+        // Do until all child processes are reaped.
+    }
+    errno = serrno;
+}
+
+// Error Function
+void error(string errorMessage)
+{
+    perror(errorMessage.c_str());
+    exit(1);
+}
+
+// Forward Declarations
+void StartServer(int portNumber);
+void InfiniteRun(int csfd);
+void StartClient(string hostname, int portnumber);
 void buildEncryptionSchemeFlatFile(int rotorcount, int schemeCount);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
