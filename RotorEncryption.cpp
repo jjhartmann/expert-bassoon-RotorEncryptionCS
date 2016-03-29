@@ -220,17 +220,19 @@ char RotorEncryption::decryptchar(char c)
     return c;
 }
 
+// adjust the rotors
 void RotorEncryption::incrementOffset()
 {
-    // Increment offsets
-    int offset = offsetMap[0];
-    offset = (offset + 1) % mMLength;
-    offsetMap[0] = offset;
+    // Increment rotor offsets
+    int index = mRotorCount - 1;
 
-    int index = 0;
-    while (offsetMap[index] == 0 && index < mRotorCount - 1)
+    int offset = offsetMap[index];
+    offset = (offset + 1) % mMLength;
+    offsetMap[index] = offset;
+
+    while (offsetMap[index] == 0 && index >= 0)
     {
-        index++;
+        index--;
         offset = offsetMap[index];
         offset = (offset + 1) % mMLength;
         offsetMap[index] = offset;
