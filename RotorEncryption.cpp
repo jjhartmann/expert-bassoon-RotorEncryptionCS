@@ -157,6 +157,7 @@ void RotorEncryption::generateEncryptionSchemeArray()
             for (int j = 0; j < mMLength; ++j)
             {
                 mSchemes.back()->ioMapEn[(i * mMLength) + j] = line[j];
+                mSchemes.back()->ioMapDe[(i * mMLength) + (line[j] - ' ')] = (char) (j + ' ');
             }
 
             getline(file, line);
@@ -200,20 +201,15 @@ char RotorEncryption::encryptchar(char c)
 char RotorEncryption::decryptchar(char c)
 {
     EScheme *currentScheme = mSchemes[mCurrentSchemeId];
-    char *currentMap = currentScheme->ioMapEn;
+    char *currentMap = currentScheme->ioMapDe;
     int n_c = c - ' ';
+    cout << "Decrypt: " << c << endl;
     for (int i = mRotorCount - 1; i >= 0; --i)
     {
-        int tmp = n_c;
-        int prev = n_c;
-        do
-        {
-            prev = tmp;
-            tmp = (char) (((currentMap[(i * mMLength) + tmp] + offsetMap[i]) - ' ') % mMLength);
-        } while (n_c != tmp);
-
-        n_c = prev;
+        n_c = (((currentMap[(i * mMLength) + n_c] + offsetMap[i]) - ' ') % mMLength);
+        cout << (char)(n_c + ' ');
     }
+    cout << endl;
     // Set current char
     c = (char) n_c + ' ';
 
