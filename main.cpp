@@ -87,19 +87,38 @@ int main()
     }
     if (choiceVal == 1)
     {
+        // Setup host and portnuymber
+        string hostname;
+        cout << "\nClient Start... \nHost: ";
+        cin >> hostname;
+
+        string portstr;
+        cout << "\nPort";
+        cin >> portstr;
+        int port = atoi(portstr.c_str());
+
         // Set up the Client
-        RotorEncryption device;
-        device.setSchemeId(0);
-        string message = "Hello this is a string and a test to see how much this will work. I am writing to you today to warn you about the never ending waterfall in the distance horizon. I know this may come to you as a skock but this needs to be addressed in oder to prevent a grave catatastraphy.";
-        string response = device.encrypt(message);
-        cout << response << endl;
-        string decrypted = device.decrypt(response);
-        cout << decrypted << endl;
+        StartClient(hostname, port);
+
+//        RotorEncryption device;
+//        device.setSchemeId(0);
+//        string message = "Hello this is a string and a test to see how much this will work. I am writing to you today to warn you about the never ending waterfall in the distance horizon. I know this may come to you as a skock but this needs to be addressed in oder to prevent a grave catatastraphy.";
+//        string response = device.encrypt(message);
+//        cout << response << endl;
+//        string decrypted = device.decrypt(response);
+//        cout << decrypted << endl;
     }
     if (choiceVal == 2)
     {
+        string portstr;
+        cout << "\nServer Start...\nPort";
+        cin >> portstr;
+        int port = atoi(portstr.c_str());
+
         // Set up the Server.
-        DiffieHellman diffie;
+        StartServer(port);
+
+//        DiffieHellman diffie;
     }
 
     return 0;
@@ -275,46 +294,6 @@ void StartClient(string hostName, int portNumber)
     int buff_size = 1024;
     char buffer[buff_size];
     int byteCount;
-
-    // Test One Caputure packet
-    cout << "Conduct Test One (caputre TCP packet)? (Y,n): ";
-    string testAccept;
-    cin >> testAccept;
-    if (testAccept == "Y")
-    {
-        // Capture a TCP packet and store in file.
-        // 1. Make a file to store packet.
-        system("touch A3Packet_1.txt");
-
-        // 2. Set up tcpdump in background process to store packet.
-        system("tcpdump -c 3 -s0 -Xvvvi eth0 tcp port 12345 > A3Packet_1.txt&");
-
-        // Sleep so tcpdump get initialized
-        cout << "\n\nWAIT FOR TCPDUMP: SHOULD PROCEED? (Y): ";
-        string dummy;
-        cin >> dummy;
-
-        string testMsg = "This is a message to test the server.";
-
-        bzero((char *)buffer, buff_size);
-        bcopy((char *) testMsg.c_str(), buffer, testMsg.length());
-
-        if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-        {
-            error("ERROR: sending message to server.");
-        }
-
-        // Receive response from sever
-        bzero(buffer, buff_size);
-        if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-        {
-            error("ERROR: Could not read from sever.");
-        }
-
-        cout << "Message from server: " << buffer << endl;
-    }
-
-
 
     bool exit = false;
     while (!exit){
