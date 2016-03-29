@@ -11,6 +11,7 @@
 #include <algorithm>
 
 #include "RotorEncryption.h"
+#include "DiffieHellman.h"
 
 using namespace std;
 
@@ -66,6 +67,7 @@ int main()
     if (choiceVal == 2)
     {
         // Set up the Server.
+        DiffieHellman diffie;
     }
 
     return 0;
