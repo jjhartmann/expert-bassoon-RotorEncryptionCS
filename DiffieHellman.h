@@ -15,6 +15,8 @@ public:
 
     void gen(long int B);
     long int encrypt(long int schemeId);
+    inline long int getmP() { return mP; }
+    inline long int getmG() { return mG; }
     inline long int getmA() { return mA; }
 private:
     long int mG;

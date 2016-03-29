@@ -213,22 +213,102 @@ void InfiniteRun(int csfd)
 {
     cout << "ENTERED PROCESS FOR CLIENT" << endl;
     // Set up buffer and connection
+    srand(time(0));
     int bufferLen = 1024;
     char buffer[bufferLen];
     bool exit = false;
+    int byteCount;
 
     // Establish shared key and encryption Scheme
     DiffieHellman encryption;
+    long int G = encryption.getmG();
+    long int P = encryption.getmP();
     long int A = encryption.getmA();
+
+    // PUBLIC KEY G
+    bzero((char *) buffer, bufferLen);
+    memcpy(&buffer, &G, sizeof(long int));
+
+    // Send public key G to client B
+    if ((byteCount = send(csfd, buffer, 14, 0)) < 0) {
+        error("ERROR: Failed to send to client");
+    }
+
+    cout << "Send public key G: " << G << endl;
+    // Wait for client to send public key B
+    bzero((char *) buffer, bufferLen);
+    if ((byteCount = recv(csfd, buffer, bufferLen, 0)) < 0) {
+        error("ERROR: Failed to read form buffer");
+    }
+
+    // PUBLIC KEY P
+    bzero((char *) buffer, bufferLen);
+    memcpy(&buffer, &P, sizeof(long int));
+
+    // Send public key P to client B
+    if ((byteCount = send(csfd, buffer, 14, 0)) < 0) {
+        error("ERROR: Failed to send to client");
+    }
+
+    cout << "Send public key P: " << P << endl;
+    // Wait for client to send public key B
+    bzero((char *) buffer, bufferLen);
+    if ((byteCount = recv(csfd, buffer, bufferLen, 0)) < 0) {
+        error("ERROR: Failed to read form buffer");
+    }
+
+    // PUBLIC KEY A
+    bzero((char *) buffer, bufferLen);
     memcpy(&buffer, &A, sizeof(long int));
-    long int tmp = 0;
-    memcpy(&tmp, &buffer, sizeof(long int));
 
+    cout << "Send public key A: " << A << endl;
+    // Send public key A to client B
+    if ((byteCount = send(csfd, buffer, 14, 0)) < 0) {
+        error("ERROR: Failed to send to client");
+    }
 
+    // Wait for client to send public key B
+    bzero((char *) buffer, bufferLen);
+    if ((byteCount = recv(csfd, buffer, bufferLen, 0)) < 0) {
+        error("ERROR: Failed to read form buffer");
+    }
+
+    long int B;
+    memcpy(&B, &buffer, sizeof(long int));
+    cout << "Receive public key B: " << B << endl;
+
+    // Create Shared Key
+    encryption.gen(B);
+
+    // Create Rotor Encryption Simulator
+    RotorEncryption rotorMachine;
+    int schemeId = rand() % rotorMachine.getSchemeCount();
+    rotorMachine.setSchemeId(schemeId);
+
+    // Send schemeId to client
+    int encryptId = encryption.encrypt(schemeId);
+
+    // SEND SCHEMEID
+    bzero((char *) buffer, bufferLen);
+    memcpy(&buffer, &encryptId, sizeof(long int));
+
+    cout << "Send encrypted scheme id: " << encryptId << endl;
+
+    // Send encrypted scheme id
+    if ((byteCount = send(csfd, buffer, 14, 0)) < 0) {
+        error("ERROR: Failed to send to client");
+    }
+
+    // Wait for client to send confirmation
+    bzero((char *) buffer, bufferLen);
+    if ((byteCount = recv(csfd, buffer, bufferLen, 0)) < 0) {
+        error("ERROR: Failed to read form buffer");
+    }
+
+    // Enter loop for communication
     while (!exit)
     {
         bzero((char *) buffer, bufferLen);
-        int byteCount;
         if ((byteCount = recv(csfd, buffer, bufferLen, 0)) < 0) {
             error("ERROR: Failed to read form buffer");
         }
@@ -315,7 +395,7 @@ void StartClient(string hostName, int portNumber)
         getline (cin,tmp);
 
         bzero((char *)buffer, buff_size);
-        bcopy((char *) tmp.c_str(), buffer, tmp.length());
+        memcpy(&buffer, tmp.c_str(), sizeof(char) * tmp.length());
 
         if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
         {

@@ -53,6 +53,7 @@ public:
 
     // Set current schemeID
     inline void setSchemeId(int id) { mCurrentSchemeId = id; }
+    inline int getSchemeCount() { return mSchemeCount; }
 
     // Encrypt/Decrypt
     string encrypt(string message);
