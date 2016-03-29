@@ -5,23 +5,27 @@
 #ifndef ROTORENCYPTIONDIFFIEHELLMAN_DIFFIEHELLMAN_H
 #define ROTORENCYPTIONDIFFIEHELLMAN_DIFFIEHELLMAN_H
 
+using namespace std;
 
 class DiffieHellman
 {
 public:
     DiffieHellman();
-    DiffieHellman(long long int g, long long int p);
+    DiffieHellman(long int g, long int p);
 
-    void gen(long long int B);
-    long long int encrypt(long long int schemeId);
+    void gen(long int B);
+    long int encrypt(long int schemeId);
 
 private:
-    long long int mG;
-    long long int mP;
-    long long int mKey;
-    long long int mA;
-    long long int mB;
-    long long int mSharedKey;
+    long int mG;
+    long int mP;
+    long int mKey;
+    long int mA;
+    long int mB;
+    long int mSharedKey;
+
+    long int sievePrimes(long int N);
+
 };
 
 
