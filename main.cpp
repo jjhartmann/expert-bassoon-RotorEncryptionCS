@@ -56,8 +56,8 @@ int main()
     {
         // Set up the Client
         RotorEncryption device;
-        device.setSchemeId(3);
-        string message = "Hello this is a string.";
+        device.setSchemeId(0);
+        string message = "Hello this is a string and a test to see how much this will work. I am writing to you today to warn you about the never ending waterfall in the distance horizon. I know this may come to you as a skock but this needs to be addressed in oder to prevent a grave catatastraphy.";
         string response = device.encrypt(message);
         cout << response << endl;
         string decrypted = device.decrypt(response);

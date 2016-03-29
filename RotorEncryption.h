@@ -24,11 +24,13 @@ struct EScheme {
         if (ioMapEn)
         {
             delete[] ioMapEn;
+            ioMapEn = NULL;
         }
 
         if (ioMapDe)
         {
             delete[] ioMapDe;
+            ioMapDe = NULL;
         }
     }
 

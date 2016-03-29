@@ -15,7 +15,7 @@ using namespace std;
 // Static Methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Build Encryption Scheme
-string RotorEncryption::asciimap = " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+string RotorEncryption::asciimap = " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 void RotorEncryption::buildEncryptionSchemeFlatFile(int rotorcount, int schemeCount)
 {
     // Seed RNG
@@ -79,7 +79,8 @@ RotorEncryption::~RotorEncryption()
 {
     for (int i = 0; i < mSchemes.size(); ++i)
     {
-        delete mSchemes[i];
+        EScheme *tmp =  mSchemes[i];
+        delete tmp;
     }
 
     if (offsetMap)
@@ -156,9 +157,11 @@ void RotorEncryption::generateEncryptionSchemeArray()
             // For each char on line
             for (int j = 0; j < mMLength; ++j)
             {
+//                cout << "<" <<line[j] << " " << (char)((j) + ' ') << ">";
                 mSchemes.back()->ioMapEn[(i * mMLength) + j] = line[j];
-                mSchemes.back()->ioMapDe[(i * mMLength) + (line[j] - ' ')] = (char) (j + ' ');
+                mSchemes.back()->ioMapDe[(i * mMLength) + ((int)line[j] -  (int)' ')] = ((char)(j) + ' ');
             }
+//            cout << endl;
 
             getline(file, line);
         }
@@ -179,19 +182,24 @@ char RotorEncryption::encryptchar(char c)
     int n_c = c - ' ';
     for (int i = 0; i < mRotorCount; ++i)
     {
-        n_c = (char) (((currentMap[(i * mMLength) + n_c] + offsetMap[i]) - ' ') % mMLength);
+        n_c = (currentMap[(i * mMLength) + ((n_c + offsetMap[i]) % mMLength)]) - (int)(' ');
     }
 
     // Set current char
     c = (char) n_c + ' ';
 
     // Increment offsets
-    offsetMap[0]++;
+    int offset = offsetMap[0];
+    offset = (offset + 1) % mMLength;
+    offsetMap[0] = offset;
+
     int index = 0;
     while (offsetMap[index] == 0 && index < mRotorCount - 1)
     {
         index++;
-        offsetMap[index]++;
+        offset = offsetMap[index];
+        offset = (offset + 1) % mMLength;
+        offsetMap[index] = offset;
     }
 
     return c;
@@ -206,20 +214,29 @@ char RotorEncryption::decryptchar(char c)
     cout << "Decrypt: " << c << endl;
     for (int i = mRotorCount - 1; i >= 0; --i)
     {
-        n_c = (((currentMap[(i * mMLength) + n_c] + offsetMap[i]) - ' ') % mMLength);
-        cout << (char)(n_c + ' ');
+        n_c = (int)(currentMap[(i * mMLength) + n_c] - ' ') - offsetMap[i];
+        if (n_c < 0)
+        {
+            n_c = mMLength + n_c;
+        }
+//        cout << (char)(n_c + ' ');
     }
-    cout << endl;
+//    cout << endl;
     // Set current char
     c = (char) n_c + ' ';
 
     // Increment offsets
-    offsetMap[0]++;
+    int offset = offsetMap[0];
+    offset = (offset + 1) % mMLength;
+    offsetMap[0] = offset;
+
     int index = 0;
     while (offsetMap[index] == 0 && index < mRotorCount - 1)
     {
         index++;
-        offsetMap[index]++;
+        offset = offsetMap[index];
+        offset = (offset + 1) % mMLength;
+        offsetMap[index] = offset;
     }
 
     return c;
