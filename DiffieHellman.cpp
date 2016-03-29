@@ -17,7 +17,7 @@ DiffieHellman::DiffieHellman() :
     srand(time(0));
 
     mKey = (rand() % 10000) + 1000;
-
+    mA = pow(mG, mKey) + mP;
 }
 
 DiffieHellman::DiffieHellman(long int g, long int p) :
@@ -28,16 +28,17 @@ DiffieHellman::DiffieHellman(long int g, long int p) :
     mSharedKey(0)
 {
     mKey = (rand() % 10000) + 1000;
+    mA = pow(mG, mKey) + mP;
 }
 
 long int DiffieHellman::encrypt(long int schemeId)
 {
-    return 0;
+    return schemeId * mSharedKey;
 }
 
 void DiffieHellman::gen(long int B)
 {
-
+    mSharedKey = pow(B, mKey) + mP;
 }
 
 // Sieve and generate prime numbers
