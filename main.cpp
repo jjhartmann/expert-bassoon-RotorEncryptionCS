@@ -93,7 +93,7 @@ int main()
         cin >> hostname;
 
         string portstr;
-        cout << "\nPort";
+        cout << "\nPort: ";
         cin >> portstr;
         int port = atoi(portstr.c_str());
 
@@ -110,8 +110,11 @@ int main()
     }
     if (choiceVal == 2)
     {
+        int bufferLen = 1024;
+        char buffer[bufferLen];
+
         string portstr;
-        cout << "\nServer Start...\nPort";
+        cout << "\nServer Start...\nPort: ";
         cin >> portstr;
         int port = atoi(portstr.c_str());
 
@@ -213,6 +216,15 @@ void InfiniteRun(int csfd)
     int bufferLen = 1024;
     char buffer[bufferLen];
     bool exit = false;
+
+    // Establish shared key and encryption Scheme
+    DiffieHellman encryption;
+    long int A = encryption.getmA();
+    memcpy(&buffer, &A, sizeof(long int));
+    long int tmp = 0;
+    memcpy(&tmp, &buffer, sizeof(long int));
+
+
     while (!exit)
     {
         bzero((char *) buffer, bufferLen);
@@ -225,7 +237,7 @@ void InfiniteRun(int csfd)
         cout << "Received message: " << buffer << endl;
 
         // Send message back to client.
-        if ((byteCount = send(csfd, "RECVED MESSAGE", 14, 0)) < 0) {
+        if ((byteCount = send(csfd, "RECEIVED MESSAGE", 14, 0)) < 0) {
             error("ERROR: Failed to send to client");
         }
 

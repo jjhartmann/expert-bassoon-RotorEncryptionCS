@@ -13,10 +13,10 @@ DiffieHellman::DiffieHellman() :
     mB(0),
     mSharedKey(0)
 {
-    sievePrimes(100000);
+    sievePrimes(50);
     srand(time(0));
 
-    mKey = (rand() % 10000) + 1000;
+    mKey = (rand() % 9) + 1;
     mA = pow(mG, mKey) + mP;
 }
 
