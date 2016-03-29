@@ -189,18 +189,7 @@ char RotorEncryption::encryptchar(char c)
     c = (char) n_c + ' ';
 
     // Increment offsets
-    int offset = offsetMap[0];
-    offset = (offset + 1) % mMLength;
-    offsetMap[0] = offset;
-
-    int index = 0;
-    while (offsetMap[index] == 0 && index < mRotorCount - 1)
-    {
-        index++;
-        offset = offsetMap[index];
-        offset = (offset + 1) % mMLength;
-        offsetMap[index] = offset;
-    }
+    incrementOffset();
 
     return c;
 }
@@ -211,7 +200,7 @@ char RotorEncryption::decryptchar(char c)
     EScheme *currentScheme = mSchemes[mCurrentSchemeId];
     char *currentMap = currentScheme->ioMapDe;
     int n_c = c - ' ';
-    cout << "Decrypt: " << c << endl;
+//    cout << "Decrypt: " << c << endl;
     for (int i = mRotorCount - 1; i >= 0; --i)
     {
         n_c = (int)(currentMap[(i * mMLength) + n_c] - ' ') - offsetMap[i];
@@ -226,6 +215,14 @@ char RotorEncryption::decryptchar(char c)
     c = (char) n_c + ' ';
 
     // Increment offsets
+    incrementOffset();
+
+    return c;
+}
+
+void RotorEncryption::incrementOffset()
+{
+    // Increment offsets
     int offset = offsetMap[0];
     offset = (offset + 1) % mMLength;
     offsetMap[0] = offset;
@@ -238,9 +235,9 @@ char RotorEncryption::decryptchar(char c)
         offset = (offset + 1) % mMLength;
         offsetMap[index] = offset;
     }
-
-    return c;
 }
+
+
 
 
 

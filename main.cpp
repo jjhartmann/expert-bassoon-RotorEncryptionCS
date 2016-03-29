@@ -61,6 +61,7 @@ int main()
         string response = device.encrypt(message);
         cout << response << endl;
         string decrypted = device.decrypt(response);
+        cout << decrypted << endl;
     }
     if (choiceVal == 2)
     {

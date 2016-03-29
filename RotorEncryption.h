@@ -70,6 +70,7 @@ private:
     void generateEncryptionSchemeArray();
     char encryptchar(char c);
     char decryptchar(char c);
+    void incrementOffset();
 
     // Static Methods
     static void permuteASCIIMap(string &map);
