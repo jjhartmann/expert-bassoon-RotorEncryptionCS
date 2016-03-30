@@ -459,9 +459,13 @@ void StartClient(string hostName, int portNumber)
         error("ERROR: sending message to server.");
     }
 
-    int schemeId;
-    memcpy(&schemeId, &buffer, sizeof(int));
-    cout << "SCHEME ID: " << schemeId << endl;
+    // Get the encrypted Scheme Id
+    int encryptId;
+    memcpy(&encryptId, &buffer, sizeof(int));
+    cout << "SCHEME ID: " << encryptId << endl;
+
+    // Decrypt Id
+    int schemeId = encryption.decrypt(encryptId);
 
     // Set up rotorMachine
     RotorEncryption rotorMachine;
