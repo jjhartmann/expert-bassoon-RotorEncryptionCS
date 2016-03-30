@@ -12,7 +12,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2d695a3-f856-4be9-a95a-2c7a201406ef" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DiffieHellman.cpp" afterPath="$PROJECT_DIR$/DiffieHellman.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
     </list>
     <ignored path="RotorEncyptionDiffieHellman.iws" />
@@ -37,8 +36,8 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.3942766">
-              <caret line="492" column="19" selection-start-line="492" selection-start-column="19" selection-end-line="492" selection-end-column="19" />
+            <state vertical-scroll-proportion="-5.8966613">
+              <caret line="334" column="69" selection-start-line="334" selection-start-column="69" selection-end-line="334" selection-end-column="69" />
               <folding>
                 <element signature="e#320#339#0" expanded="true" />
               </folding>
@@ -425,8 +424,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.3942766">
-          <caret line="492" column="19" selection-start-line="492" selection-start-column="19" selection-end-line="492" selection-end-column="19" />
+        <state vertical-scroll-proportion="-5.8966613">
+          <caret line="334" column="69" selection-start-line="334" selection-start-column="69" selection-end-line="334" selection-end-column="69" />
           <folding>
             <element signature="e#320#339#0" expanded="true" />
           </folding>

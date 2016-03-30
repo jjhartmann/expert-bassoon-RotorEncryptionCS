@@ -327,8 +327,13 @@ void InfiniteRun(int csfd)
             error("ERROR: Failed to read form buffer");
         }
 
+        string encryptMessage(buffer);
         cout << "Received bytes: " << byteCount << endl;
-        cout << "Received message: " << buffer << endl;
+        cout << "Received encrypted message: " << encryptMessage << endl;
+
+        // Decrypt message
+        string decryptMessage = rotorMachine.decrypt(encryptMessage);
+        cout << "\nDecrypted message: " << decryptMessage << endl << endl;
 
         // Send message back to client.
         if ((byteCount = send(csfd, "RECEIVED MESSAGE", 16, 0)) < 0) {
