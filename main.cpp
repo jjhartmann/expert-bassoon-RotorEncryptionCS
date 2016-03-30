@@ -481,7 +481,7 @@ void StartClient(string hostName, int portNumber)
     bool exit = false;
     while (!exit)
     {
-        cout << "Choose Desired Quote to send:\n\t(1) Outlander\n\t(2) The count of Monte Cristo\n\tMoby-Dick\nAnswer: ";
+        cout << "Choose Desired Quote to send:\n\t(1) Outlander\n\t(2) The count of Monte Cristo\n\t(3) Moby-Dick\nAnswer: ";
         string choicetxt;
         cin >> choicetxt;
         int choice = atoi(choicetxt.c_str());
@@ -511,6 +511,8 @@ void StartClient(string hostName, int portNumber)
 
         // Encrypt the message with rotorMachine
         string encryptText = rotorMachine.encrypt(text);
+
+        cout << "Encrypted Text: " << encryptText << endl;
 
         // Send to server
         bzero((char *)buffer, buff_size);
