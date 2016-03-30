@@ -258,7 +258,6 @@ void InfiniteRun(int csfd)
     // PUBLIC KEY P
     bzero((char *) buffer, bufferLen);
     memcpy(&buffer, &P, sizeof(long int));
-
     // Send public key P to client B
     if ((byteCount = send(csfd, buffer, sizeof(long int), 0)) < 0) {
         error("ERROR: Failed to send to client");
@@ -296,6 +295,7 @@ void InfiniteRun(int csfd)
 
     // Create Rotor Encryption Simulator
     RotorEncryption rotorMachine;
+    srand(time(NULL));
     int schemeId = rand() % rotorMachine.getSchemeCount();
     rotorMachine.setSchemeId(schemeId);
 
@@ -331,7 +331,7 @@ void InfiniteRun(int csfd)
         cout << "Received message: " << buffer << endl;
 
         // Send message back to client.
-        if ((byteCount = send(csfd, "RECEIVED MESSAGE", 14, 0)) < 0) {
+        if ((byteCount = send(csfd, "RECEIVED MESSAGE", 16, 0)) < 0) {
             error("ERROR: Failed to send to client");
         }
 
