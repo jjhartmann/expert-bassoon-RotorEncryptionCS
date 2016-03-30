@@ -11,7 +11,9 @@
     </ADDITIONAL_GENERATION_ENVIRONMENT>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2d695a3-f856-4be9-a95a-2c7a201406ef" name="Default" comment="" />
+    <list default="true" id="d2d695a3-f856-4be9-a95a-2c7a201406ef" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DiffieHellman.cpp" afterPath="$PROJECT_DIR$/DiffieHellman.cpp" />
+    </list>
     <ignored path="RotorEncyptionDiffieHellman.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,11 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="5.3211446">
-              <caret line="555" column="40" selection-start-line="555" selection-start-column="40" selection-end-line="555" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="392" column="0" selection-start-line="392" selection-start-column="0" selection-end-line="392" selection-end-column="0" />
               <folding>
                 <element signature="e#320#339#0" expanded="true" />
               </folding>
@@ -43,11 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DiffieHellman.cpp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DiffieHellman.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DiffieHellman.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="79" column="34" selection-start-line="79" selection-start-column="34" selection-end-line="79" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.5707472">
+              <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
               <folding>
                 <element signature="e#41#60#0" expanded="true" />
               </folding>
@@ -101,8 +103,8 @@
         <option value="$PROJECT_DIR$/RotorEncryption.cpp" />
         <option value="$PROJECT_DIR$/RotorEncryption.h" />
         <option value="$PROJECT_DIR$/DiffieHellman.h" />
-        <option value="$PROJECT_DIR$/DiffieHellman.cpp" />
         <option value="$PROJECT_DIR$/main.cpp" />
+        <option value="$PROJECT_DIR$/DiffieHellman.cpp" />
       </list>
     </option>
   </component>
@@ -410,22 +412,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DiffieHellman.cpp">
+    <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="79" column="34" selection-start-line="79" selection-start-column="34" selection-end-line="79" selection-end-column="34" />
+          <caret line="392" column="0" selection-start-line="392" selection-start-column="0" selection-end-line="392" selection-end-column="0" />
           <folding>
-            <element signature="e#41#60#0" expanded="true" />
+            <element signature="e#320#339#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
+    <entry file="file://$PROJECT_DIR$/DiffieHellman.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="5.3211446">
-          <caret line="555" column="40" selection-start-line="555" selection-start-column="40" selection-end-line="555" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.5707472">
+          <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
           <folding>
-            <element signature="e#320#339#0" expanded="true" />
+            <element signature="e#41#60#0" expanded="true" />
           </folding>
         </state>
       </provider>

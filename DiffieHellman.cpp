@@ -40,7 +40,7 @@ long int DiffieHellman::decrypt(long int val)
 
 void DiffieHellman::gen(long int B)
 {
-    mSharedKey = (int)pow(B, mKey) % (int)mP;
+    mSharedKey = (int)std::pow(static_cast<double>(B), mKey) % (int)mP;
     cout << "SHARED KEY: " << mSharedKey << endl;
 }
 
@@ -79,5 +79,5 @@ void DiffieHellman::generatePrviteKeyandPublicKeyA()
     mKey = (rand() % 4) + 1;
     cout << "PRIVATE KEY: " << mKey << endl;
 
-    mA = (int)pow(mG, mKey) % (int)mP;
+    mA = (int)std::pow(static_cast<double>(mG), mKey) % (int)mP;
 }
