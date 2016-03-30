@@ -487,19 +487,19 @@ void StartClient(string hostName, int portNumber)
             case 1:
             {
                 text = "Blood of my blood and bone of my bone. You carry me within ye, Claire, and ye canna leave me now, no matter what happens. You are mine, always, if ye will it or no, if ye want me or nay. Mine, and I wilna let ye go.";
-                cout << "\nChoice Text From Outlander:\n\n" << text << endl;
+                cout << "\nChoice Text From Outlander:\n\n" << text << endl << endl;
                 break;
             }
             case 2:
             {
                 text = "There is neither happiness nor unhappiness in this world; there is only the comparison of one state with another. Only a man who has felt ultimate despair is capable of feeling ultimate bliss. It is necessary to have wished for death in order to know how good it is to live.....the sum of all human wisdom will be contained in these two words: Wait and Hope.";
-                cout << "\nChoice Text From Count of Monte Cristo:\n\n" << text << endl;
+                cout << "\nChoice Text From Count of Monte Cristo:\n\n" << text << endl << endl;
                 break;
             }
             case 3:
             {
                 text = "Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially when my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people's hats off--then, I account it high time to get to sea as soon as I can.";
-                cout << "\nChoice Text From Moby-Dick:\n\n" << text << endl;
+                cout << "\nChoice Text From Moby-Dick:\n\n" << text << endl << endl;
                 break;
             }
         }

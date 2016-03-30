@@ -76,7 +76,7 @@ long int DiffieHellman::sievePrimes( long int N)
 void DiffieHellman::generatePrviteKeyandPublicKeyA()
 {
     srand(time(0));
-    mKey = (rand() % 9) + 1;
+    mKey = (rand() % 4) + 1;
     cout << "PRIVATE KEY: " << mKey << endl;
 
     mA = (int)pow(mG, mKey) % (int)mP;
