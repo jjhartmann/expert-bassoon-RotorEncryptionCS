@@ -244,7 +244,7 @@ void InfiniteRun(int csfd)
     memcpy(&buffer, &G, sizeof(long int));
 
     // Send public key G to client B
-    if ((byteCount = send(csfd, buffer, 14, 0)) < 0) {
+    if ((byteCount = send(csfd, buffer, sizeof(long int), 0)) < 0) {
         error("ERROR: Failed to send to client");
     }
 
@@ -260,7 +260,7 @@ void InfiniteRun(int csfd)
     memcpy(&buffer, &P, sizeof(long int));
 
     // Send public key P to client B
-    if ((byteCount = send(csfd, buffer, 14, 0)) < 0) {
+    if ((byteCount = send(csfd, buffer, sizeof(long int), 0)) < 0) {
         error("ERROR: Failed to send to client");
     }
 
@@ -277,7 +277,7 @@ void InfiniteRun(int csfd)
 
     cout << "Send public key A: " << A << endl;
     // Send public key A to client B
-    if ((byteCount = send(csfd, buffer, 14, 0)) < 0) {
+    if ((byteCount = send(csfd, buffer, sizeof(long int), 0)) < 0) {
         error("ERROR: Failed to send to client");
     }
 
@@ -359,8 +359,7 @@ void StartClient(string hostName, int portNumber)
     hostent *server;
 
     // Setup socket
-    if ((clientSocketFileDesc = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-    {
+    if ((clientSocketFileDesc = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         error("ERROR: Failed to create socket.");
     }
 
@@ -368,8 +367,7 @@ void StartClient(string hostName, int portNumber)
     if (answer == "Y")
     {
         // Use the hostname
-        if ((server = gethostbyname(hostName.c_str())) == NULL)
-        {
+        if ((server = gethostbyname(hostName.c_str())) == NULL) {
             error("ERROR: Failed to get server hostname");
         }
     }
@@ -377,8 +375,7 @@ void StartClient(string hostName, int portNumber)
     {
         // Use IP address
         inet_pton(AF_INET, hostName.c_str(), &serverAddr);
-        if ((server = gethostbyaddr(&serverAddr, sizeof(serverAddr), AF_INET)) == NULL)
-        {
+        if ((server = gethostbyaddr(&serverAddr, sizeof(serverAddr), AF_INET)) == NULL) {
             error("ERROR: Failed to get server address");
         }
     }
@@ -390,8 +387,7 @@ void StartClient(string hostName, int portNumber)
 
 
     // Connect client socket to server
-    if (connect(clientSocketFileDesc, (sockaddr *) &serverAddress, sizeof(serverAddress)))
-    {
+    if (connect(clientSocketFileDesc, (sockaddr *) &serverAddress, sizeof(serverAddress))) {
         error("Error: Failed to connect to server.");
     }
 
@@ -405,31 +401,27 @@ void StartClient(string hostName, int portNumber)
 
     // Receive Public Key G
     bzero(buffer, buff_size);
-    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-    {
+    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
         error("ERROR: Could not read from sever.");
     }
 
     long int G;
     memcpy(&G, &buffer, sizeof(long int));
     cout << "Received public key G: " << G << endl;
-    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0)
-    {
+    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0) {
         error("ERROR: sending message to server.");
     }
 
     // Receive Public Key P
     bzero(buffer, buff_size);
-    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-    {
+    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
         error("ERROR: Could not read from sever.");
     }
 
     long int P;
     memcpy(&P, &buffer, sizeof(long int));
     cout << "Received public key P: " << P << endl;
-    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0)
-    {
+    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0) {
         error("ERROR: sending message to server.");
     }
 
@@ -438,8 +430,7 @@ void StartClient(string hostName, int portNumber)
 
     // Receive Public Key B
     bzero(buffer, buff_size);
-    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-    {
+    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
         error("ERROR: Could not read from sever.");
     }
 
@@ -453,21 +444,18 @@ void StartClient(string hostName, int portNumber)
     long int A = encryption.getmA();
     memcpy(&buffer, &A, sizeof(long int));
     cout << "Send Public Key A: " << A << endl;
-    if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-    {
+    if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
         error("ERROR: sending message to server.");
     }
 
     // Get Encrypted Scheme Id.
     bzero(buffer, buff_size);
-    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-    {
+    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
         error("ERROR: Could not read from sever.");
     }
 
     // Confirm schemid recieved.
-    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0)
-    {
+    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0) {
         error("ERROR: sending message to server.");
     }
 
@@ -490,15 +478,13 @@ void StartClient(string hostName, int portNumber)
         bzero((char *)buffer, buff_size);
         memcpy(&buffer, tmp.c_str(), sizeof(char) * tmp.length());
 
-        if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-        {
+        if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
             error("ERROR: sending message to server.");
         }
 
         // Receive response from sever
         bzero(buffer, buff_size);
-        if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
-        {
+        if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
             error("ERROR: Could not read from sever.");
         }
 
