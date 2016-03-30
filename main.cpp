@@ -472,15 +472,44 @@ void StartClient(string hostName, int portNumber)
     rotorMachine.setSchemeId(schemeId);
 
 
+    // START TEST //
     bool exit = false;
-    while (!exit){
-        cout << "Enter Message to send to server: ";
-        string tmp;
-        cin.ignore();
-        getline (cin,tmp);
+    while (!exit)
+    {
+        cout << "Choose Desired Quote to send:\n\t(1) Outlander\n\t(2) The count of Monte Cristo\n\tMoby-Dick\nAnswer: ";
+        string choicetxt;
+        cin >> choicetxt;
+        int choice = atoi(choicetxt.c_str());
 
+        string text;
+        switch(choice)
+        {
+            case 1:
+            {
+                text = "Blood of my blood and bone of my bone. You carry me within ye, Claire, and ye canna leave me now, no matter what happens. You are mine, always, if ye will it or no, if ye want me or nay. Mine, and I wilna let ye go.";
+                cout << "\nChoice Text From Outlander:\n\n" << text << endl;
+                break;
+            }
+            case 2:
+            {
+                text = "There is neither happiness nor unhappiness in this world; there is only the comparison of one state with another. Only a man who has felt ultimate despair is capable of feeling ultimate bliss. It is necessary to have wished for death in order to know how good it is to live.....the sum of all human wisdom will be contained in these two words: Wait and Hope.";
+                cout << "\nChoice Text From Count of Monte Cristo:\n\n" << text << endl;
+                break;
+            }
+            case 3:
+            {
+                text = "Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially when my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people's hats off--then, I account it high time to get to sea as soon as I can.";
+                cout << "\nChoice Text From Moby-Dick:\n\n" << text << endl;
+                break;
+            }
+        }
+
+        // Encrypt the message with rotorMachine
+        string encryptText = rotorMachine.encrypt(text);
+
+        // Send to server
         bzero((char *)buffer, buff_size);
-        memcpy(&buffer, tmp.c_str(), sizeof(char) * tmp.length());
+        memcpy(&buffer, encryptText.c_str(), sizeof(char) * encryptText.length());
 
         if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
             error("ERROR: sending message to server.");
@@ -493,10 +522,43 @@ void StartClient(string hostName, int portNumber)
         }
 
         cout << "Message from server: " << buffer << endl;
-        exit = (tmp == "exit");
+
+        // Repeat
+        cout << "Conduct anotherTest? (Y/n): ";
+        string answer;
+        cin >> answer;
+        if (answer == "n" || answer == "N")
+        {
+            exit = true;
+        }
     }
+    cout << "\nFinished Tests" << endl;
+
+//    bool exit = false;
+//    while (!exit){
+//        cout << "Enter Message to send to server: ";
+//        string tmp;
+//        cin.ignore();
+//        getline (cin,tmp);
+//
+//        bzero((char *)buffer, buff_size);
+//        memcpy(&buffer, tmp.c_str(), sizeof(char) * tmp.length());
+//
+//        if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
+//            error("ERROR: sending message to server.");
+//        }
+//
+//        // Receive response from sever
+//        bzero(buffer, buff_size);
+//        if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0) {
+//            error("ERROR: Could not read from sever.");
+//        }
+//
+//        cout << "Message from server: " << buffer << endl;
+//        exit = (tmp == "exit");
+//    }
+
     // Close connections
     close(clientSocketFileDesc);
-
 }
 
