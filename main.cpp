@@ -121,7 +121,21 @@ int main()
         // Set up the Server.
         StartServer(port);
 
-//        DiffieHellman diffie;
+//        DiffieHellman HostA;
+//
+//        int G = HostA.getmG();
+//        int P = HostA.getmP();
+//        int A = HostA.getmA();
+//
+//        DiffieHellman HostB(G, P);
+//        int B = HostB.getmA();
+//
+//        // Gen Shared Key
+//        HostA.gen(B);
+//        HostB.gen(A);
+//
+//        int encrypt = HostA.encrypt(4);
+//        int decrypt = HostB.decrypt(encrypt);
     }
 
     return 0;
@@ -449,6 +463,12 @@ void StartClient(string hostName, int portNumber)
     if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
     {
         error("ERROR: Could not read from sever.");
+    }
+
+    // Confirm schemid recieved.
+    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0)
+    {
+        error("ERROR: sending message to server.");
     }
 
     int schemeId;
