@@ -15,10 +15,7 @@ DiffieHellman::DiffieHellman() :
     mSharedKey(0)
 {
     sievePrimes(30);
-    srand(time(0));
-
-    mKey = (rand() % 9) + 1;
-    mA = (int)pow(mG, mKey) % (int)mP;
+    generatePrviteKeyandPublicKeyA();
 }
 
 DiffieHellman::DiffieHellman(long int g, long int p) :
@@ -28,8 +25,7 @@ DiffieHellman::DiffieHellman(long int g, long int p) :
     mB(0),
     mSharedKey(0)
 {
-    mKey = (rand() % 9) + 1;
-    mA = (int)pow(mG, mKey) % (int)mP;
+    generatePrviteKeyandPublicKeyA();
 }
 
 long int DiffieHellman::encrypt(long int schemeId)
@@ -37,7 +33,8 @@ long int DiffieHellman::encrypt(long int schemeId)
     return schemeId * mSharedKey;
 }
 
-long int DiffieHellman::decrypt(long int val) {
+long int DiffieHellman::decrypt(long int val)
+{
     return val/mSharedKey;
 }
 
@@ -76,4 +73,11 @@ long int DiffieHellman::sievePrimes( long int N)
 }
 
 
+void DiffieHellman::generatePrviteKeyandPublicKeyA()
+{
+    srand(time(0));
+    mKey = (rand() % 9) + 1;
+    cout << "PRIVATE KEY: " << mKey << endl;
 
+    mA = (int)pow(mG, mKey) % (int)mP;
+}

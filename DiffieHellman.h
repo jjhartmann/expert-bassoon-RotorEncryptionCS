@@ -28,6 +28,7 @@ private:
     long int mSharedKey;
 
     long int sievePrimes(long int N);
+    void generatePrviteKeyandPublicKeyA();
 
 };
 
