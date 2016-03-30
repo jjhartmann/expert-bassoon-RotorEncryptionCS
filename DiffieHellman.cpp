@@ -1,6 +1,7 @@
 //
 // Created by Jeremy on 3/28/2016.
 //
+#include <iostream>
 #include <vector>
 #include <cmath>
 #include <ctime>
@@ -27,7 +28,7 @@ DiffieHellman::DiffieHellman(long int g, long int p) :
     mB(0),
     mSharedKey(0)
 {
-    mKey = (rand() % 10000) + 1000;
+    mKey = (rand() % 9) + 1;
     mA = pow(mG, mKey) + mP;
 }
 
@@ -39,6 +40,7 @@ long int DiffieHellman::encrypt(long int schemeId)
 void DiffieHellman::gen(long int B)
 {
     mSharedKey = pow(B, mKey) + mP;
+    cout << "SHARED KEY: " << mSharedKey << endl;
 }
 
 // Sieve and generate prime numbers

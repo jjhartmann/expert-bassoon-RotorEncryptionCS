@@ -235,7 +235,7 @@ void InfiniteRun(int csfd)
     }
 
     cout << "Send public key G: " << G << endl;
-    // Wait for client to send public key B
+    // Wait for client Confirmation
     bzero((char *) buffer, bufferLen);
     if ((byteCount = recv(csfd, buffer, bufferLen, 0)) < 0) {
         error("ERROR: Failed to read form buffer");
@@ -251,7 +251,7 @@ void InfiniteRun(int csfd)
     }
 
     cout << "Send public key P: " << P << endl;
-    // Wait for client to send public key B
+    // Wait for client confirmation
     bzero((char *) buffer, bufferLen);
     if ((byteCount = recv(csfd, buffer, bufferLen, 0)) < 0) {
         error("ERROR: Failed to read form buffer");
@@ -381,11 +381,84 @@ void StartClient(string hostName, int portNumber)
         error("Error: Failed to connect to server.");
     }
 
-
     // Ask user for message to send server
     int buff_size = 1024;
     char buffer[buff_size];
     int byteCount;
+
+
+    // ESTABLISH CONNECTION
+
+    // Receive Public Key G
+    bzero(buffer, buff_size);
+    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+    {
+        error("ERROR: Could not read from sever.");
+    }
+
+    long int G;
+    memcpy(&G, &buffer, sizeof(long int));
+    cout << "Received public key G: " << G << endl;
+    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0)
+    {
+        error("ERROR: sending message to server.");
+    }
+
+    // Receive Public Key P
+    bzero(buffer, buff_size);
+    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+    {
+        error("ERROR: Could not read from sever.");
+    }
+
+    long int P;
+    memcpy(&P, &buffer, sizeof(long int));
+    cout << "Received public key P: " << P << endl;
+    if ((byteCount = send(clientSocketFileDesc, "OK", buff_size, 0)) < 0)
+    {
+        error("ERROR: sending message to server.");
+    }
+
+    // Setup Diffie-Hellman
+    DiffieHellman encryption(G, P);
+
+    // Receive Public Key B
+    bzero(buffer, buff_size);
+    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+    {
+        error("ERROR: Could not read from sever.");
+    }
+
+    long int B;
+    memcpy(&B, &buffer, sizeof(long int));
+    cout << "Received public key B: " << B << endl;
+    encryption.gen(B);
+
+    // Send Public Key A
+    bzero(buffer, buff_size);
+    long int A = encryption.getmA();
+    memcpy(&buffer, &A, sizeof(long int));
+    cout << "Send Public Key A: " << A << endl;
+    if ((byteCount = send(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+    {
+        error("ERROR: sending message to server.");
+    }
+
+    // Get Encrypted Scheme Id.
+    bzero(buffer, buff_size);
+    if ((byteCount = recv(clientSocketFileDesc, buffer, buff_size, 0)) < 0)
+    {
+        error("ERROR: Could not read from sever.");
+    }
+
+    int schemeId;
+    memcpy(&schemeId, &buffer, sizeof(int));
+    cout << "SCHEME ID: " << schemeId << endl;
+
+    // Set up rotorMachine
+    RotorEncryption rotorMachine;
+    rotorMachine.setSchemeId(schemeId);
+
 
     bool exit = false;
     while (!exit){
