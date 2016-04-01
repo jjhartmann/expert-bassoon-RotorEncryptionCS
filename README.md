@@ -56,6 +56,7 @@ The client will then decrypt the schemeId and both will communicate witht the sp
 
 ## Data Samples
 
+### Sample 1
 From the Client:
 ```
    There is neither happiness nor unhappiness in this world; there is only the comparison of one state with another.
@@ -79,4 +80,36 @@ Form the Server:
    with another. Only a man who has felt ultimate despair is capable of feeling ultimate bliss. It is necessary to have 
    wished for death in order to know how good it is to live.....the sum of all human wisdom will be contained in these two
    words: Wait and Hope.
+```
+
+### Sample 2
+
+From Client:
+```
+  Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I 
+  find myself   involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and
+  especially when my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from 
+  deliberately stepping into the street, and methodically knocking people's hats off--then, I account it high time to
+  get to sea as soon as I can.
+
+  Encrypted Text: X_>p=g8435>&*cB w{Yt#Cje'tUU(EqtX6pA4Wo:@;0*n"6r.9$=n7QU vwc-&dD!_Bc+6~/G)Wx#Ce'e>SI@)cG^\d:5Db|%}Zm
+  nHOWqs9\W`}PYw9;sG8}lDe\s=Ib@E8Iedq^J-|X{cId8TYNXx3]8>C%(W |j#`}{EI|(Xo%X@;_/sb>~dvu?y(veQss3A`B0&P^(fn:yGfZRJPCrB<B)Wa_
+  2:,wS=M!!^.W9R=^d08+t|O=gm];AJ#wXX;$Es"mEw%[<Sbm\pwMQ9;FF!nDcozNCA71~8V;F]G]UI>]OXpaM$'"PhAK[E6s;dq>i_0%(<zBH-^N~uo)
+  ,?="v"-g'frb@o#p!0%&e^I* c*r$jK5QXE8RaIg_H+JtaBfH}63fG{,Z| |1_!v-I8,mz'+Jf5SQ;>gUOb_nqj`@bm+RdqUu|Xj+ZL:,6S<#miLAgVF
+  Oo-gc%"QM*a !nHG$%jKQ(8*'lL6b)Z\e`.kT\
+```
+
+From Server:
+```
+  Received encrypted message: X_>p=g8435>&*cB w{Yt#Cje'tUU(EqtX6pA4Wo:@;0*n"6r.9$=n7QU vwc-&dD!_Bc+6~/G)Wx#Ce'e>SI@)cG^\d:5Db|%}Zm
+  nHOWqs9\W`}PYw9;sG8}lDe\s=Ib@E8Iedq^J-|X{cId8TYNXx3]8>C%(W |j#`}{EI|(Xo%X@;_/sb>~dvu?y(veQss3A`B0&P^(fn:yGfZRJPCrB<B)Wa_
+  2:,wS=M!!^.W9R=^d08+t|O=gm];AJ#wXX;$Es"mEw%[<Sbm\pwMQ9;FF!nDcozNCA71~8V;F]G]UI>]OXpaM$'"PhAK[E6s;dq>i_0%(<zBH-^N~uo)
+  ,?="v"-g'frb@o#p!0%&e^I* c*r$jK5QXE8RaIg_H+JtaBfH}63fG{,Z| |1_!v-I8,mz'+Jf5SQ;>gUOb_nqj`@bm+RdqUu|Xj+ZL:,6S<#miLAgVF
+  Oo-gc%"QM*a !nHG$%jKQ(8*'lL6b)Z\e`.kT\
+
+Decrypted message: Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; 
+whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; 
+and especially when my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from
+deliberately stepping into the street, and methodically knocking people's hats off--then, I account it high time to get 
+to sea as soon as I can.
 ```
